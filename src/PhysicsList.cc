@@ -227,7 +227,7 @@ void PhysicsList::SetCuts()
 	// Argon = 15.76	
 	// Set the low limit on the production cut based on the first excitation potential of the gas
 	// Argon = 11.6	
-	G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(15.76*eV,1*GeV);
+	G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(11.6*eV,1*GeV);
 	if (verboseLevel >0){
     	G4cout << "PhysicsList::SetCuts:";
     	G4cout << "CutLength : " << defaultCutValue/mm << " (mm)" << G4endl;

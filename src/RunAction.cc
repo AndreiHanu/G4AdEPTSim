@@ -127,10 +127,10 @@ void RunAction::RecordEventPos(G4ThreeVector evtPos)
 	//outFileXZ << evtPos.x()/mm << "," << evtPos.y()/mm << "," << evtPos.z()/mm << G4endl;
 	
 	// Increment X-Z projection
-	projXZ[GetBin(evtPos.x(),-1000.,1000.,4000)][GetBin(evtPos.z(),-1000.,1000.,4000)] += 1;
+	projXZ[GetBin(evtPos.x(),-42.2,42.2,211)][GetBin(evtPos.z(),-42.2,42.2,211)] += 1;
 	
 	// Increment Y-Z projection
-	projYZ[GetBin(evtPos.y(),-1000.,1000.,4000)][GetBin(evtPos.z(),-1000.,1000.,4000)] += 1;
+	projYZ[GetBin(evtPos.y(),-42.2,42.2,211)][GetBin(evtPos.z(),-42.2,42.2,211)] += 1;
 	
 	//G4cout << G4endl << "Bin " << GetBin(evtPos.x(),-1000.,1000.,4000) ;
 }
@@ -145,17 +145,28 @@ void RunAction::CloseEventFiles()
 void RunAction::EndOfRunAction(const G4Run* run)
 {
 	// Initialize OpenCV Mat object using the projection data
-	Mat XZ = Mat(4000, 4000, CV_32SC1, projXZ );
-	Mat YZ = Mat(4000, 4000, CV_32SC1, projYZ );
+	Mat XZ = Mat(211, 211, CV_32SC1, projXZ );
+	Mat YZ = Mat(211, 211, CV_32SC1, projYZ );
 	
-	// Image parameters
+	// Image parameters (JPEG)
+	/*
 	std::vector<int> params;
 	params.push_back(CV_IMWRITE_JPEG_QUALITY);
 	params.push_back(100);   // that's percent, so 100 == no compression, 1 == full 
+	*/
 	
-	imwrite("XZ.jpg", XZ, params);
-	imwrite("YZ.jpg", YZ, params);
+	// Image parameters (PNG) lossless
+	vector<int> compression_params;
+    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+    compression_params.push_back(1);
+    
+    
+    // Write the image to file
+    imwrite("XZ.png", XZ, compression_params);
+    imwrite("YZ.png", YZ, compression_params);
 	
+	//imwrite("XZ.jpg", XZ, params);
+	//imwrite("YZ.jpg", YZ, params);
 	
 	// Print End of Run
 	G4cout << "\n---------------------- End of Run "<< run->GetRunID() << " ------------------------------\n" << G4endl;
