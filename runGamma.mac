@@ -36,12 +36,12 @@
 # Create A Source
 /gps/pos/type Plane
 /gps/pos/shape Circle
-/gps/pos/radius 20. cm
+/gps/pos/radius 5. cm
 /gps/direction 0. 0. -1.
 /gps/pos/centre 0. 0. 2.5 m
 
 # Energy & Particle Type
 /gps/particle gamma
 /gps/ene/type Mono
-/gps/ene/mono 50 MeV
+/gps/ene/mono 5 MeV
 /run/beamOn 200
