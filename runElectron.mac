@@ -14,7 +14,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. mm
-/gps/pos/radius 2000. mm
+/gps/pos/radius 100. mm
 
 # Use the cosine angular distribution
 /gps/ang/type cos
@@ -26,4 +26,4 @@
 /gps/particle e-
 /gps/ene/type Mono
 /gps/ene/mono 100 MeV
-/run/beamOn 50
+/run/beamOn 10

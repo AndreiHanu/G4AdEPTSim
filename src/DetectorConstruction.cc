@@ -53,9 +53,6 @@
 #include "G4GeometryManager.hh"
 #include "G4ProductionCuts.hh"
 
-// Physics Biasing
-#include "GB02BOptrMultiParticleForceCollision.hh"
-
 // Scoring Components
 #include "G4SDManager.hh"
 #include "G4SDParticleFilter.hh"
@@ -202,18 +199,6 @@ void DetectorConstruction::ConstructSDandField() {
     // Setting myTrackerSD to all logical volumes with the same name 
   	// of "TrackingVolumeLogical".
   	SetSensitiveDetector("TrackingVolumeLogical", myTrackerSD, true);
-  	
-  	////////////////////////////////////////////////////////////////////////
-	// -- Volume biasing similar to MCNP (GB02 example)
-  	GB02BOptrMultiParticleForceCollision* testMany =  new GB02BOptrMultiParticleForceCollision();
-  	testMany->AddParticle("gamma");
-  	// testMany->AttachTo(TEPCGasLogical);
-	testMany->AttachTo(TrackerLogical);
-	  
-  	G4cout 	<< " Attaching biasing operator " << testMany->GetName()
-         	<< " to logical volume " << TrackerLogical->GetName()
-         	<< G4endl;
-	
 }
 
 

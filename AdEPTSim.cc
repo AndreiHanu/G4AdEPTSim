@@ -38,7 +38,6 @@
 #include "G4UImanager.hh"
 #include "Randomize.hh"
 #include "G4ScoringManager.hh"
-#include "G4PhysListFactory.hh"
 
 // Simulation Files
 #include "DetectorConstruction.hh"
@@ -46,8 +45,6 @@
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "PhysicsList.hh"
-
-#include "G4GenericBiasingPhysics.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -68,24 +65,8 @@ int main(int argc,char** argv)
   	G4RunManager* runManager = new G4RunManager;
 	
 	// Physics list
-	//G4int verbose = 0;
-  	G4PhysListFactory factory;
-  	//G4VModularPhysicsList* physlist = factory.GetReferencePhysList("FTFP_BERT_HP");		// + Standard EM Physics
-  	//G4VModularPhysicsList* physlist = factory.GetReferencePhysList("FTFP_BERT_HP_EMV");	// + Option 1 EM Physics
-  	//G4VModularPhysicsList* physlist = factory.GetReferencePhysList("FTFP_BERT_HP_EMY");	// + Option 3 EM Physics
-  	//G4VModularPhysicsList* physlist = factory.GetReferencePhysList("FTFP_BERT_HP_EMZ");	// + Option 4 EM Physics [Most accurate, but slow]
-  	//G4VModularPhysicsList* physlist = factory.GetReferencePhysList("FTFP_BERT_HP_PEN");	// + Penelope Physics
-  	G4VModularPhysicsList* physlist = factory.GetReferencePhysList("QGSP_BIC_PEN");
-  	//physlist->SetVerboseLevel(verbose);
-//   	PhysicsList* physlist = new PhysicsList();
-  	
-  	// Physics biasing
-	G4GenericBiasingPhysics* biasingPhysics = new G4GenericBiasingPhysics();
-	biasingPhysics->Bias("gamma");
-	physlist->RegisterPhysics(biasingPhysics);
-  	
-  	runManager->SetUserInitialization(physlist);
-// 	runManager->SetUserInitialization(new PhysicsList);
+  	PhysicsList* physlist = new PhysicsList();
+	runManager->SetUserInitialization(physlist);
 
   	// Set mandatory initialization classes
   	DetectorConstruction* detector = new DetectorConstruction();
