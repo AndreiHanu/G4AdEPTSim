@@ -62,9 +62,9 @@
 DetectorConstruction::DetectorConstruction(): G4VUserDetectorConstruction(), fCheckOverlaps(true), fRegGasDet(0)
 {
 	// Default Parameter Values
-	DRIFT_GAS_length = 84.4*mm;			// Drift gas volume length
-	DRIFT_GAS_width = 84.4*mm;			// Drift gas volume width
-	DRIFT_GAS_height = 84.4*mm;			// Drift gas volume height
+	DRIFT_GAS_length = 253.2*mm;			// Drift gas volume length
+	DRIFT_GAS_width = 253.2*mm;			// Drift gas volume width
+	DRIFT_GAS_height = 253.2*mm;			// Drift gas volume height
 	
 	// Production cuts for secondary particle generation
 	G4double cut = 50.*um;

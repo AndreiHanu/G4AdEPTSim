@@ -15,7 +15,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. mm
-/gps/pos/radius 50. mm
+/gps/pos/radius 250. mm
 
 # Use the cosine angular distribution
 /gps/ang/type cos
@@ -24,25 +24,7 @@
 /gps/source/list 
 
 # Energy & Particle Type
-/gps/particle He3
+/gps/particle proton
 /gps/ene/type Mono
-/gps/ene/mono 900 MeV
-/run/beamOn 5
-
-
-##########################################################################################
-# Model the source as a plane source starting at +Z and shooting towards the -Z
-##########################################################################################
-
-# Create A Source
-# /gps/pos/type Plane
-# /gps/pos/shape Circle
-# /gps/pos/radius 1. cm
-# /gps/direction 0. 0. -1.
-# /gps/pos/centre 0. 0. 2.5 m
-# 
-# Energy & Particle Type
-# /gps/particle proton
-# /gps/ene/type Mono
-# /gps/ene/mono 100 MeV
-# /run/beamOn 
+/gps/ene/mono 1000 MeV
+/run/beamOn 50

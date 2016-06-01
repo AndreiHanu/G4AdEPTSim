@@ -12,36 +12,19 @@
 # Model the particle source along the surface of a sphere surrounding the detector
 ##########################################################################################
 
-#/gps/pos/type Surface
-#/gps/pos/shape Sphere
-#/gps/pos/centre 0. 0. 0. mm
-#/gps/pos/radius 2000. mm
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 250. mm
 
 # Use the cosine angular distribution
-#/gps/ang/type cos
-#/gps/ang/mintheta    0.000E+00 deg
-#/gps/ang/maxtheta    9.000E+01 deg
-#/gps/source/list 
-
-# Energy & Particle Type
-#/gps/particle gamma
-#/gps/ene/type Mono
-#/gps/ene/mono 100 MeV
-#/run/beamOn 2000
-
-##########################################################################################
-# Model the source as a plane source starting at +Z and shooting towards the -Z
-##########################################################################################
-
-# Create A Source
-/gps/pos/type Plane
-/gps/pos/shape Circle
-/gps/pos/radius 5. cm
-/gps/direction 0. 0. -1.
-/gps/pos/centre 0. 0. 2.5 m
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+/gps/source/list 
 
 # Energy & Particle Type
 /gps/particle gamma
 /gps/ene/type Mono
 /gps/ene/mono 5 MeV
-/run/beamOn 200
+/run/beamOn 50
