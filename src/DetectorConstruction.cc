@@ -57,6 +57,9 @@
 #include "G4SDManager.hh"
 #include "G4SDParticleFilter.hh"
 
+// need to include for forcing interactions
+#include "GB02BOptrMultiParticleForceCollision.hh"
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 DetectorConstruction::DetectorConstruction(): G4VUserDetectorConstruction(), fCheckOverlaps(true), fRegGasDet(0)
@@ -199,6 +202,20 @@ void DetectorConstruction::ConstructSDandField() {
     // Setting myTrackerSD to all logical volumes with the same name 
   	// of "TrackingVolumeLogical".
   	SetSensitiveDetector("TrackingVolumeLogical", myTrackerSD, true);
+	
+	//Grabbing the logical volume where we will apply biasing  
+	G4LogicalVolume* logicTest = G4LogicalVolumeStore::GetInstance()->GetVolume("TrackingVolumeLogical");
+	
+	GB02BOptrMultiParticleForceCollision* testMany = new GB02BOptrMultiParticleForceCollision();
+	
+	testMany->AddParticle("gamma");
+	testMany->AddParticle("neutron");
+	
+	testMany->AttachTo(logicTest);
+	
+	G4cout << " Attaching biasing operator " << testMany->GetName()
+    	   << " to logical volume " << logicTest->GetName()
+    	   << G4endl;
 }
 
 

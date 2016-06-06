@@ -46,6 +46,10 @@
 #include "EventAction.hh"
 #include "PhysicsList.hh"
 
+// Biasing Files
+#include "G4GenericBiasingPhysics.hh"
+#include "FTFP_BERT.hh"
+
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
 #endif
@@ -65,8 +69,19 @@ int main(int argc,char** argv)
   	G4RunManager* runManager = new G4RunManager;
 	
 	// Physics list
-  	PhysicsList* physlist = new PhysicsList();
-	runManager->SetUserInitialization(physlist);
+  	PhysicsList* physicsList = new PhysicsList();
+
+	
+	// Create new biasingPhysics instance and apply bias for gamma and neutrons, then register it to physlist
+	G4GenericBiasingPhysics* biasingPhysics = new G4GenericBiasingPhysics();
+	biasingPhysics->Bias("gamma");
+	biasingPhysics->Bias("neutron");
+	physicsList->RegisterPhysics(biasingPhysics);
+	G4cout << "      ********************************************************* " << G4endl;
+	G4cout << "      ********** processes are wrapped for biasing ************ " << G4endl;
+	G4cout << "      ********************************************************* " << G4endl;
+	
+	runManager->SetUserInitialization(physicsList);
 
   	// Set mandatory initialization classes
   	DetectorConstruction* detector = new DetectorConstruction();
