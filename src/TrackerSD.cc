@@ -57,6 +57,9 @@ TrackerSD::~TrackerSD()
 
 void TrackerSD::Initialize(G4HCofThisEvent* hce)
 {
+	// Default hcID to -1 if it does not already exist
+	static int hcID = -1;
+	
   	// Create hits collection
   	fHitsCollection = new TrackerHitsCollection(SensitiveDetectorName, collectionName[0]); 
 
