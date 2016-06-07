@@ -35,6 +35,7 @@
 #include "G4VModularPhysicsList.hh"
 #include "globals.hh"
 #include "G4EmConfigurator.hh"
+#include "G4GenericBiasingPhysics.hh"
 
 class G4VPhysicsConstructor;
 
@@ -60,6 +61,7 @@ public:
 
 private:
 
+  
   void  AddPAIModel(const G4String&);
   void  NewPAIModel(const G4ParticleDefinition*, const G4String& modname, 
                     const G4String& procname);
@@ -73,6 +75,10 @@ private:
 
   G4VPhysicsConstructor*  fEmPhysicsList;
   G4VPhysicsConstructor*  fDecayPhysicsList;
+  
+  //Predefine fBiasingPhysics for use in initialization of PhysicsList and ConstructProcess
+  G4GenericBiasingPhysics* fBiasingPhysics;
+  
   std::vector<G4VPhysicsConstructor*> fHadronPhys;
   G4String fEmName;
 

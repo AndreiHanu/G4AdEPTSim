@@ -90,10 +90,15 @@
 #include "G4ParticleTypes.hh"
 #include "G4ParticleTable.hh"
 
+//biasing physics list
+#include "G4GenericBiasingPhysics.hh"
+#include "FTFP_BERT.hh"
+
 PhysicsList::PhysicsList() : G4VModularPhysicsList(),
   fConfig(0),
   fEmPhysicsList(0),
-  fDecayPhysicsList(0)
+  fDecayPhysicsList(0),
+  fBiasingPhysics(0)
 {
   fConfig = G4LossTableManager::Instance()->EmConfigurator();
   G4LossTableManager::Instance()->SetVerbose(0);
@@ -122,10 +127,15 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
   //fEmPhysicsList = new G4EmStandardPhysics_option3();
   fEmPhysicsList = new G4EmStandardPhysics();
   
+  //initialize fBiasingPhysics and make it type G4GenericBiasingPhysics then set particles to bias
+  fBiasingPhysics = new G4GenericBiasingPhysics();
+  fBiasingPhysics->Bias("gamma");
+  fBiasingPhysics->Bias("neutron");
+  
   // EM physics in gas cavity (Photoabsorption Ionization Model)
   //fEmName = G4String("pai_photon");
   fEmName = G4String("pai");
-
+  
   SetVerboseLevel(0);
 }
 
@@ -152,6 +162,10 @@ void PhysicsList::ConstructProcess()
   AddTransportation();
   fEmPhysicsList->ConstructProcess();
   fDecayPhysicsList->ConstructProcess();
+  
+  //Construct the biasing physics list
+  fBiasingPhysics->ConstructProcess();
+  
   for(size_t i=0; i<fHadronPhys.size(); ++i) { 
     fHadronPhys[i]->ConstructProcess(); }
 }
@@ -160,6 +174,7 @@ void PhysicsList::ConstructProcess()
 
 void PhysicsList::AddPhysicsList(const G4String& name)
 {
+  
   if (verboseLevel>1) {
     G4cout << "PhysicsList::AddPhysicsList: <" << name << ">" << G4endl;
   }

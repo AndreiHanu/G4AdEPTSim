@@ -70,17 +70,6 @@ int main(int argc,char** argv)
 	
 	// Physics list
   	PhysicsList* physicsList = new PhysicsList();
-
-	
-	// Create new biasingPhysics instance and apply bias for gamma and neutrons, then register it to physlist
-	G4GenericBiasingPhysics* biasingPhysics = new G4GenericBiasingPhysics();
-	biasingPhysics->Bias("gamma");
-	biasingPhysics->Bias("neutron");
-	physicsList->RegisterPhysics(biasingPhysics);
-	G4cout << "      ********************************************************* " << G4endl;
-	G4cout << "      ********** processes are wrapped for biasing ************ " << G4endl;
-	G4cout << "      ********************************************************* " << G4endl;
-	
 	runManager->SetUserInitialization(physicsList);
 
   	// Set mandatory initialization classes
