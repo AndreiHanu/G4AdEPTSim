@@ -49,7 +49,7 @@
 #include <opencv2/imgproc.hpp>
 
 // Output filename format
-#define FILENAME_FORMAT "ArgonBox_Geant4_%Y%m%d_%H%M%S_Proj_"
+#define FILENAME_FORMAT "ArgonBox_Geant4_%Y%m%d_%H%M_Proj_"
 #define FILENAME_SIZE 60
 
 using namespace std;
@@ -152,9 +152,22 @@ void RunAction::EndOfRunAction(const G4Run* run)
     compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
     compression_params.push_back(1);
 	
+	//Generate file naming format for images
+	static char outputFileTemplate[FILENAME_SIZE];
+    time_t now = time(0);
+    strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
+	outputFile = outputFileTemplate;
+	//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
+	eventFileXZ = outputFile + G4UIcommand::ConvertToString(run->GetRunID()) + "XZ.png"; 
+	eventFileYZ = outputFile + G4UIcommand::ConvertToString(run->GetRunID()) + "YZ.png"; 
+	
     // Write the image to file
-    imwrite("XZ.png", XZ, compression_params);
-    imwrite("YZ.png", YZ, compression_params);
+    imwrite(eventFileXZ, XZ, compression_params);
+    imwrite(eventFileYZ, YZ, compression_params);
+	
+	//use for trial and error when checking results on small samples, generates only one image in current directory
+	// imwrite("XZ.png", XZ, compression_params);
+    // imwrite("YZ.png", YZ, compression_params);
 	
 	// imwrite("XZ.jpg", XZ, params);
 	// imwrite("YZ.jpg", YZ, params);

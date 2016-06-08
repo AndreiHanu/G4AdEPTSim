@@ -24,8 +24,21 @@
 /gps/source/list 
 
 # Energy & Particle Type
+#/gps/particle proton
+#/gps/ene/type Mono
+#/gps/ene/mono 1000 MeV
+#/run/beamOn 50
+
+/gps/source/intensity 0.9
+/gps/particle proton
+/gps/ene/type Mono
+/gps/ene/mono 1000 MeV
+
+/gps/source/add 0.1
 /gps/particle gamma
 /gps/ene/type Mono
 /gps/ene/mono 5 MeV
-/run/beamOn 50
 
+#ensures that at each event one of each particle type is generated
+/gps/source/multiplevertex true
+/run/beamOn 10
