@@ -1,6 +1,6 @@
 
 #/control/alias initialValue 0
-#/control/alias   finalValue 359
+#/control/alias   finalValue 40
 #/control/alias     stepSize 1
 #/control/loop runProton.mac counterName {initialValue} {finalValue} {stepSize}
 
