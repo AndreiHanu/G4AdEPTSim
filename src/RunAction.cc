@@ -158,8 +158,8 @@ void RunAction::EndOfRunAction(const G4Run* run)
     strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
 	outputFile = outputFileTemplate;
 	//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
-	eventFileXZ = outputFile + G4UIcommand::ConvertToString(run->GetRunID()) + "XZ.png"; 
-	eventFileYZ = outputFile + G4UIcommand::ConvertToString(run->GetRunID()) + "YZ.png"; 
+	eventFileXZ = outputFile + "XZ_event_" + G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
+	eventFileYZ = outputFile + "YZ_event_" + G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
 	
     // Write the image to file
     imwrite(eventFileXZ, XZ, compression_params);
