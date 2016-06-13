@@ -93,6 +93,8 @@
 //biasing physics list
 #include "G4GenericBiasingPhysics.hh"
 #include "FTFP_BERT.hh"
+#include "G4GammaConversion.hh"
+using namespace std;
 
 PhysicsList::PhysicsList() : G4VModularPhysicsList(),
   fConfig(0),
@@ -129,7 +131,9 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
   
   //initialize fBiasingPhysics and make it type G4GenericBiasingPhysics then set particles to bias
   fBiasingPhysics = new G4GenericBiasingPhysics();
-  fBiasingPhysics->Bias("gamma");
+  processesToBias.push_back("conv");
+  fBiasingPhysics->Bias("gamma", processesToBias);
+  //std::vector < const G4ParticleDefinition* > fParticlesToBias; for reference
   fBiasingPhysics->Bias("neutron");
   
   // EM physics in gas cavity (Photoabsorption Ionization Model)
