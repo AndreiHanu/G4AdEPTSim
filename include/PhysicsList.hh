@@ -80,6 +80,7 @@ private:
   G4GenericBiasingPhysics* fBiasingPhysics;
   
   std::vector<G4VPhysicsConstructor*> fHadronPhys;
+  //Predefine processToBias as a vector made of G4Strings
   std::vector<G4String> processesToBias;
   G4String fEmName;
 

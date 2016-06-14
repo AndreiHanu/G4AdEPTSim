@@ -131,6 +131,8 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
   
   //initialize fBiasingPhysics and make it type G4GenericBiasingPhysics then set particles to bias
   fBiasingPhysics = new G4GenericBiasingPhysics();
+  //Add the proccess' needed for biasing; keywords for processes can be found in chapter 5.2: Physics Processes of geant manual
+  //Search class reference of process wanted and keyword is found there
   processesToBias.push_back("conv");
   fBiasingPhysics->Bias("gamma", processesToBias);
   //std::vector < const G4ParticleDefinition* > fParticlesToBias; for reference
