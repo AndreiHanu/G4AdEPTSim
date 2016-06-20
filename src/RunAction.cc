@@ -161,10 +161,14 @@ void RunAction::EndOfRunAction(const G4Run* run)
 	eventFileXZ = outputFile + "XZ_event_" + G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
 	eventFileYZ = outputFile + "YZ_event_" + G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
 	
-    // Write the image to file
-    imwrite(eventFileXZ, XZ, compression_params);
-    imwrite(eventFileYZ, YZ, compression_params);
-	
+    // Check that there was an event recorded and write the image to file
+	double psumxz = sum(XZ)[0];
+	double psumyz = sum(YZ)[0];
+	if (psumxz!=0. && psumyz!=0.){
+		imwrite(eventFileXZ, XZ, compression_params);
+    	imwrite(eventFileYZ, YZ, compression_params);
+	}
+
 	//use for trial and error when checking results on small samples, generates only one image in current directory
 	// imwrite("XZ.png", XZ, compression_params);
     // imwrite("YZ.png", YZ, compression_params);

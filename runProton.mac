@@ -27,4 +27,4 @@
 /gps/particle proton
 /gps/ene/type Mono
 /gps/ene/mono 1000 MeV
-/run/beamOn 50
+/run/beamOn 5
