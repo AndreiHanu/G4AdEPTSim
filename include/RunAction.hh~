@@ -67,8 +67,8 @@ private:
 	FILE* pFileYZ;
 	
 	// Projection Histogram Array
-	int projXZ[211][211];
-	int projYZ[211][211];
+	int projXZ[633][633];
+	int projYZ[633][633];
 	
 };
 

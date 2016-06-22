@@ -123,10 +123,10 @@ G4int RunAction::GetBin(G4double val, G4double min, G4double max, G4int numBins)
 void RunAction::RecordEventPos(G4ThreeVector evtPos)
 {
 	// Increment X-Z projection
-	projXZ[GetBin(evtPos.x(),-126.6,126.6,633)][GetBin(evtPos.z(),-126.6,126.6,633)] += 1;
+	projXZ[GetBin(evtPos.x(),-126.6,126.6,211)][GetBin(evtPos.z(),-126.6,126.6,211)] += 1;
 	
 	// Increment Y-Z projection
-	projYZ[GetBin(evtPos.y(),-126.6,126.6,633)][GetBin(evtPos.z(),-126.6,126.6,633)] += 1;
+	projYZ[GetBin(evtPos.y(),-126.6,126.6,211)][GetBin(evtPos.z(),-126.6,126.6,211)] += 1;
 }
 
 void RunAction::CloseEventFiles()
@@ -139,8 +139,8 @@ void RunAction::CloseEventFiles()
 void RunAction::EndOfRunAction(const G4Run* run)
 {
 	// Initialize OpenCV Mat object using the projection data
-	Mat XZ = Mat(633, 633, CV_32SC1, projXZ );
-	Mat YZ = Mat(633, 633, CV_32SC1, projYZ );
+	Mat XZ = Mat(211, 211, CV_32SC1, projXZ );
+	Mat YZ = Mat(211, 211, CV_32SC1, projYZ );
 	
 	// Image parameters (JPEG)
 	// std::vector<int> params;
