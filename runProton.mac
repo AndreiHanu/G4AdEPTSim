@@ -26,5 +26,5 @@
 # Energy & Particle Type
 /gps/particle proton
 /gps/ene/type Mono
-/gps/ene/mono 1000 MeV
-/run/beamOn 5
+/gps/ene/mono 100 MeV
+/run/beamOn 10

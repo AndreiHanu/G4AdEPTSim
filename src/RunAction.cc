@@ -43,6 +43,9 @@
 
 #include "G4SystemOfUnits.hh"
 
+// Messenger classes
+#include "G4GenericMessenger.hh"
+
 // Include OpenCV to generate the projection image files
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -55,9 +58,17 @@
 using namespace std;
 using namespace cv;
 
-RunAction::RunAction():G4UserRunAction() {}
+RunAction::RunAction():G4UserRunAction(), SNR(5), NoiseCenter(0), NoiseSigma(3), Threshold(0) {
+	fMessenger = new G4GenericMessenger(this,"/AdEPTSim/", "Image generation controls");
+ 	fMessenger->DeclareProperty("SNR", SNR, "Set the signal-to-noise level");
+	fMessenger->DeclareProperty("NoiseCenter", NoiseCenter, "Set the center value for the noise in electrons");
+	fMessenger->DeclareProperty("NoiseSigma", NoiseSigma, "Set the sigma for the noise in electrons");
+	fMessenger->DeclareProperty("Threshold", Threshold, "Set the threshold level for black pixels");
+}
 
-RunAction::~RunAction() {}
+RunAction::~RunAction() {
+	delete fMessenger;
+}
 
 
 void RunAction::BeginOfRunAction(const G4Run* run)
@@ -65,6 +76,9 @@ void RunAction::BeginOfRunAction(const G4Run* run)
 
 	// Print Run ID
 	G4cout << "\n--------------------- Start of Run "<< run->GetRunID() << " -----------------------------\n" << G4endl;
+
+	
+	G4cout << SNR << "\n" << NoiseCenter << "\n" << NoiseSigma << "\n" << Threshold << G4endl;
 
 	// Set Starting Seed
 	long seeds[2];
@@ -139,8 +153,8 @@ void RunAction::CloseEventFiles()
 void RunAction::EndOfRunAction(const G4Run* run)
 {
 	// Initialize OpenCV Mat object using the projection data
-	Mat XZ = Mat(211, 211, CV_32SC1, projXZ );
-	Mat YZ = Mat(211, 211, CV_32SC1, projYZ );
+	Mat XZ = Mat(211, 211, CV_32SC1, **projXZ *= SNR );
+	Mat YZ = Mat(211, 211, CV_32SC1, **projYZ *= SNR );
 	
 	// Image parameters (JPEG)
 	// std::vector<int> params;
@@ -180,4 +194,3 @@ void RunAction::EndOfRunAction(const G4Run* run)
 	G4cout << "\n---------------------- End of Run "<< run->GetRunID() << " ------------------------------\n" << G4endl;
 	
 }
-

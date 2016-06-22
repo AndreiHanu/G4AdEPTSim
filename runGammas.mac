@@ -1,10 +1,18 @@
 
-#/control/alias initialValue 0
-#/control/alias   finalValue 10000
-#/control/alias     stepSize 1
-#/control/loop runProton.mac counterName {initialValue} {finalValue} {stepSize}
+#########################
+# Set detector parameters
+#
+/AdEPTSim/SNR 1
+/AdEPTSim/NoiseCenter 0
+/AdEPTSim/NoiseSigma 11
+/AdEPTSim/Threshold 13
 
 /control/alias initialValue 0
-/control/alias   finalValue 10000
+/control/alias   finalValue 10
 /control/alias     stepSize 1
-/control/loop runGamma.mac counterName {initialValue} {finalValue} {stepSize}
+/control/loop runProton.mac counterName {initialValue} {finalValue} {stepSize}
+
+#/control/alias initialValue 0
+#/control/alias   finalValue 10
+#/control/alias     stepSize 1
+#/control/loop runGamma.mac counterName {initialValue} {finalValue} {stepSize}

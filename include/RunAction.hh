@@ -37,6 +37,7 @@
 #include "G4ThreeVector.hh"
 
 class G4Run;
+class G4GenericMessenger;
 
 /// Run action class
 
@@ -59,6 +60,15 @@ private:
 	G4int GetBin(G4double val, G4double min, G4double max, G4int numBins);
 
 private:
+	// Define a generic messenger class
+	G4GenericMessenger* fMessenger;
+
+	// Define variables for image thresholding
+	int SNR;
+	int NoiseCenter;
+	int NoiseSigma;
+	int Threshold;
+
 	// Output File
 	G4String outputFile;
 	G4String eventFileXZ;
