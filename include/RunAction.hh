@@ -38,13 +38,14 @@
 
 class G4Run;
 class G4GenericMessenger;
+class PrimaryGeneratorAction;
 
 /// Run action class
 
 class RunAction : public G4UserRunAction
 {
 public:
-	RunAction();
+	RunAction(PrimaryGeneratorAction*);
 	virtual ~RunAction();
 
 	virtual void BeginOfRunAction(const G4Run*);
@@ -63,18 +64,13 @@ private:
 	// Define a generic messenger class
 	G4GenericMessenger* fMessenger;
 
+	// Particle Gun
+	PrimaryGeneratorAction* particleGun;
+
 	// Define variables for image thresholding
 	int SNR;
 	int NoiseCenter;
 	int NoiseSigma;
-	int Threshold;
-
-	// Output File
-	G4String outputFile;
-	G4String eventFileXZ;
-	G4String eventFileYZ;
-	FILE* pFileXZ;
-	FILE* pFileYZ;
 	
 	// Projection Histogram Array
 	int projXZ[211][211];

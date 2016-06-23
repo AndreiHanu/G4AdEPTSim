@@ -144,6 +144,3 @@ ExitBiasing( const G4Track*                           track,
 {
   if ( fCurrentOperator ) fCurrentOperator->ExitingBiasing( track, callingProcess );
 }
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////

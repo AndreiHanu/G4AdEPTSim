@@ -32,6 +32,7 @@
 
 #include "RunAction.hh"
 #include "DetectorConstruction.hh"
+#include "PrimaryGeneratorAction.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
@@ -52,18 +53,17 @@
 #include <opencv2/imgproc.hpp>
 
 // Output filename format
-#define FILENAME_FORMAT "ArgonBox_Geant4_%Y%m%d_%H%M_Proj_"
+#define FILENAME_FORMAT "ArgonBox_%Y%m%d_%H%M_"
 #define FILENAME_SIZE 60
 
 using namespace std;
 using namespace cv;
 
-RunAction::RunAction():G4UserRunAction(), SNR(5), NoiseCenter(0), NoiseSigma(3), Threshold(0) {
-	fMessenger = new G4GenericMessenger(this,"/AdEPTSim/", "Image generation controls");
+RunAction::RunAction(PrimaryGeneratorAction* primary):G4UserRunAction(), particleGun(primary), SNR(5), NoiseCenter(0), NoiseSigma(3) {
+	fMessenger = new G4GenericMessenger(this,"/AdEPTSim/Image/", "Image generation controls");
  	fMessenger->DeclareProperty("SNR", SNR, "Set the signal-to-noise level");
 	fMessenger->DeclareProperty("NoiseCenter", NoiseCenter, "Set the center value for the noise in electrons");
 	fMessenger->DeclareProperty("NoiseSigma", NoiseSigma, "Set the sigma for the noise in electrons");
-	fMessenger->DeclareProperty("Threshold", Threshold, "Set the threshold level for black pixels");
 }
 
 RunAction::~RunAction() {
@@ -77,9 +77,6 @@ void RunAction::BeginOfRunAction(const G4Run* run)
 	// Print Run ID
 	G4cout << "\n--------------------- Start of Run "<< run->GetRunID() << " -----------------------------\n" << G4endl;
 
-	
-	G4cout << SNR << "\n" << NoiseCenter << "\n" << NoiseSigma << "\n" << Threshold << G4endl;
-
 	// Set Starting Seed
 	long seeds[2];
 	time_t systime = time(NULL);
@@ -87,29 +84,9 @@ void RunAction::BeginOfRunAction(const G4Run* run)
 	seeds[1] = (long) (systime*G4UniformRand());  
 	CLHEP::HepRandom::setTheSeeds(seeds);
 	
-	// Create Filename Template
-	static char outputFileTemplate[FILENAME_SIZE];
-    time_t now = time(0);
-    strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
-    
-	outputFile = outputFileTemplate;
-	
 	// Zero out the projection arrays
 	memset(projXZ, 0, sizeof projXZ);
 	memset(projYZ, 0, sizeof projYZ);
-
-}
-
-void RunAction::CreateEventFiles()
-{
-	eventFileXZ = outputFile + "XZ.csv"; 
-	eventFileYZ = outputFile + "YZ.csv"; 
-	
-	pFileXZ = fopen(eventFileXZ,"w");
-	pFileYZ = fopen(eventFileYZ,"w");
-	
-	//std::ofstream outFileXZ(eventFileXZ);
-	//std::ofstream outFileYZ(eventFileYZ);
 
 }
 
@@ -143,52 +120,50 @@ void RunAction::RecordEventPos(G4ThreeVector evtPos)
 	projYZ[GetBin(evtPos.y(),-126.6,126.6,211)][GetBin(evtPos.z(),-126.6,126.6,211)] += 1;
 }
 
-void RunAction::CloseEventFiles()
-{
-	// Close file
-	fclose(pFileXZ);
-	fclose(pFileYZ);
-}
-
 void RunAction::EndOfRunAction(const G4Run* run)
 {
 	// Initialize OpenCV Mat object using the projection data
-	Mat XZ = Mat(211, 211, CV_32SC1, **projXZ *= SNR );
-	Mat YZ = Mat(211, 211, CV_32SC1, **projYZ *= SNR );
-	
-	// Image parameters (JPEG)
-	// std::vector<int> params;
-	// params.push_back(CV_IMWRITE_JPEG_QUALITY);
-	// params.push_back(100);   // that's percent, so 100 == no compression, 1 == full 
-	
-	// Image parameters (PNG) lossless
-	vector<int> compression_params;
-    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-    compression_params.push_back(1);
-	
-	//Generate file naming format for images
-	static char outputFileTemplate[FILENAME_SIZE];
-    time_t now = time(0);
-    strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
-	outputFile = outputFileTemplate;
-	//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
-	eventFileXZ = outputFile + "XZ_event_" + G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
-	eventFileYZ = outputFile + "YZ_event_" + G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
-	
-    // Check that there was an event recorded and write the image to file
-	double psumxz = sum(XZ)[0];
-	double psumyz = sum(YZ)[0];
-	if (psumxz!=0. && psumyz!=0.){
+	Mat XZ = Mat(211, 211, CV_32SC1, projXZ);
+	Mat YZ = Mat(211, 211, CV_32SC1, projYZ);
+
+	// Check if there was an event recorded and write the image to file
+	if (sum(XZ)[0] > 0. && sum(YZ)[0] > 0.){
+		// Initialize OpenCV Mat object for adding Gaussian noise to the images
+		Mat noiseXZ = Mat(XZ.size(), CV_32SC1);
+		Mat noiseYZ = Mat(YZ.size(), CV_32SC1);
+		randn(noiseXZ, NoiseCenter, NoiseSigma);
+		randn(noiseYZ, NoiseCenter, NoiseSigma);
+
+		// Scale the track images by the SNR
+		XZ *= SNR;
+		YZ *= SNR;
+
+		// Add the noise to the track images
+		XZ += noiseXZ;
+		YZ += noiseYZ;
+		
+		// Image parameters (PNG) lossless
+		vector<int> compression_params;
+		compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+		compression_params.push_back(1);
+		
+		// Generate file naming format for images
+		static char outputFileTemplate[FILENAME_SIZE];
+		time_t now = time(0);
+		strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
+		G4String outputFile = outputFileTemplate;
+		//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
+		G4String eventFileXZ = 	outputFile + particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
+								G4UIcommand::ConvertToString(particleGun->GetGPS()->GetParticleEnergy()/MeV) + "MeV_XZ_event_" + 
+								G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
+		G4String eventFileYZ = 	outputFile + particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
+								G4UIcommand::ConvertToString(particleGun->GetGPS()->GetParticleEnergy()/MeV) + "MeV_YZ_event_" + 
+								G4UIcommand::ConvertToString(run->GetRunID()) + ".png";  
+
+		// Write out the images
 		imwrite(eventFileXZ, XZ, compression_params);
     	imwrite(eventFileYZ, YZ, compression_params);
 	}
-
-	//use for trial and error when checking results on small samples, generates only one image in current directory
-	// imwrite("XZ.png", XZ, compression_params);
-    // imwrite("YZ.png", YZ, compression_params);
-	
-	// imwrite("XZ.jpg", XZ, params);
-	// imwrite("YZ.jpg", YZ, params);
 	
 	// Print End of Run
 	G4cout << "\n---------------------- End of Run "<< run->GetRunID() << " ------------------------------\n" << G4endl;

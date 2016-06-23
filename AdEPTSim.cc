@@ -81,7 +81,7 @@ int main(int argc,char** argv)
 	runManager->SetUserAction(primary);
 	
 	// Run Action
-	RunAction* runAction = new RunAction();
+	RunAction* runAction = new RunAction(primary);
 	runManager->SetUserAction(runAction);
 	
 	// Event Action

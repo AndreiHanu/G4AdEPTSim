@@ -62,7 +62,7 @@
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-DetectorConstruction::DetectorConstruction(): G4VUserDetectorConstruction(), fCheckOverlaps(true), fRegGasDet(0)
+DetectorConstruction::DetectorConstruction(): G4VUserDetectorConstruction(), fRegGasDet(0), fCheckOverlaps(true)
 {
 	// Default Parameter Values
 	DRIFT_GAS_length = 253.2*mm;			// Drift gas volume length

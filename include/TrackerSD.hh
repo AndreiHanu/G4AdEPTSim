@@ -63,9 +63,8 @@ class TrackerSD : public G4VSensitiveDetector
     virtual void   EndOfEvent(G4HCofThisEvent* hitCollection);
 
   private:
-	TrackerHitsCollection* fHitsCollection;
-	G4ParticleDefinition* particleDef;
-	G4int hcID;
+	  TrackerHitsCollection* fHitsCollection;
+	  G4ParticleDefinition* particleDef;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
