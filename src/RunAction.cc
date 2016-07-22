@@ -153,10 +153,10 @@ void RunAction::EndOfRunAction(const G4Run* run)
 		strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
 		G4String outputFile = outputFileTemplate;
 		//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
-		G4String eventFileXZ = 	outputFile + particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
+		G4String eventFileXZ = 	particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
 								G4UIcommand::ConvertToString(particleGun->GetGPS()->GetParticleEnergy()/MeV) + "MeV_XZ_event_" + 
 								G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
-		G4String eventFileYZ = 	outputFile + particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
+		G4String eventFileYZ = 	particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
 								G4UIcommand::ConvertToString(particleGun->GetGPS()->GetParticleEnergy()/MeV) + "MeV_YZ_event_" + 
 								G4UIcommand::ConvertToString(run->GetRunID()) + ".png";  
 
