@@ -1,0 +1,15 @@
+
+#########################
+# Set detector parameters
+#
+/AdEPTSim/Image/SNR 1
+/AdEPTSim/Image/NoiseCenter 0
+/AdEPTSim/Image/NoiseSigma 0
+
+##########################
+# Use a control loop to execute a macro file more than once
+#
+/control/alias initialValue	0
+/control/alias finalValue 	10
+/control/alias stepSize 	1
+/control/loop runGamma.mac counterName {initialValue} {finalValue} {stepSize}

@@ -18,8 +18,8 @@ endif()
 
 #----------------------------------------------------------------------------
 # Find OpenCV package
-find_package(OpenCV REQUIRED core imgproc highgui)
-#find_package(OpenCV REQUIRED core imgproc highgui imgcodecs)
+#find_package(OpenCV REQUIRED core imgproc highgui)
+find_package(OpenCV REQUIRED core imgproc highgui imgcodecs)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 #----------------------------------------------------------------------------
@@ -47,9 +47,13 @@ set(ADEPT_SCRIPTS
 	vis.mac
 	runProton.mac
 	runElectron.mac
+  runElectronLoop.mac
 	runGamma.mac
 	runGammas.mac
+  runGammaLoop.mac
 	runGammaProton.mac
+	runGCRProton.mac
+	runGCRProtonLoop.mac
   )
 
 foreach(_script ${ADEPT_SCRIPTS})

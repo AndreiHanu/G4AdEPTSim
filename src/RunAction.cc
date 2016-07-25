@@ -60,6 +60,14 @@ using namespace std;
 using namespace cv;
 
 RunAction::RunAction(PrimaryGeneratorAction* primary):G4UserRunAction(), particleGun(primary), SNR(5), NoiseCenter(0), NoiseSigma(3) {
+	// Set starting seed for the Random Number Generator
+	long seeds[2];
+	time_t systime = time(NULL);
+	seeds[0] = (long) systime;
+	seeds[1] = (long) (systime*G4UniformRand());  
+    G4Random::setTheSeeds(seeds);
+
+	// Set the parameters to control image noise and SNR
 	fMessenger = new G4GenericMessenger(this,"/AdEPTSim/Image/", "Image generation controls");
  	fMessenger->DeclareProperty("SNR", SNR, "Set the signal-to-noise level");
 	fMessenger->DeclareProperty("NoiseCenter", NoiseCenter, "Set the center value for the noise in electrons");
@@ -76,13 +84,6 @@ void RunAction::BeginOfRunAction(const G4Run* run)
 
 	// Print Run ID
 	G4cout << "\n--------------------- Start of Run "<< run->GetRunID() << " -----------------------------\n" << G4endl;
-
-	// Set Starting Seed
-	long seeds[2];
-	time_t systime = time(NULL);
-	seeds[0] = (long) systime;
-	seeds[1] = (long) (systime*G4UniformRand());  
-	CLHEP::HepRandom::setTheSeeds(seeds);
 	
 	// Zero out the projection arrays
 	memset(projXZ, 0, sizeof projXZ);
@@ -114,10 +115,10 @@ G4int RunAction::GetBin(G4double val, G4double min, G4double max, G4int numBins)
 void RunAction::RecordEventPos(G4ThreeVector evtPos)
 {
 	// Increment X-Z projection
-	projXZ[GetBin(evtPos.x(),-126.6,126.6,211)][GetBin(evtPos.z(),-126.6,126.6,211)] += 1;
+	projXZ[GetBin(evtPos.z(),-126.6,126.6,211)][GetBin(evtPos.x(),-126.6,126.6,211)] += 1;
 	
 	// Increment Y-Z projection
-	projYZ[GetBin(evtPos.y(),-126.6,126.6,211)][GetBin(evtPos.z(),-126.6,126.6,211)] += 1;
+	projYZ[GetBin(evtPos.z(),-126.6,126.6,211)][GetBin(evtPos.y(),-126.6,126.6,211)] += 1;
 }
 
 void RunAction::EndOfRunAction(const G4Run* run)
@@ -153,12 +154,11 @@ void RunAction::EndOfRunAction(const G4Run* run)
 		strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
 		G4String outputFile = outputFileTemplate;
 		//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
-		G4String eventFileXZ = 	particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
-								G4UIcommand::ConvertToString(particleGun->GetGPS()->GetParticleEnergy()/MeV) + "MeV_XZ_event_" + 
-								G4UIcommand::ConvertToString(run->GetRunID()) + ".png"; 
-		G4String eventFileYZ = 	particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + "_" + 
-								G4UIcommand::ConvertToString(particleGun->GetGPS()->GetParticleEnergy()/MeV) + "MeV_YZ_event_" + 
-								G4UIcommand::ConvertToString(run->GetRunID()) + ".png";  
+		G4String eventFileXZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_XZ_" + 
+								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
+
+		G4String eventFileYZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_YZ_" + 
+								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
 
 		// Write out the images
 		imwrite(eventFileXZ, XZ, compression_params);

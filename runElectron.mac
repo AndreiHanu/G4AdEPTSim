@@ -1,30 +1,25 @@
-# Initialize The Run
+# Initialize the run
 /run/initialize
 
 # Set Cuts
-/run/setCut  205 um					# Properly adjusted for Argon at NTP
+/run/setCut  50 um					# Properly adjusted for Argon at NTP
 /run/particle/dumpCutValues
 
-# Verbosity
-/tracking/verbose 0
+# Source definition
+/gps/particle e-
+/gps/ene/type Mono
+/gps/ene/mono 5 MeV
 
-##########################################################################################
 # Model the particle source along the surface of a sphere surrounding the detector
-##########################################################################################
-
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. mm
-/gps/pos/radius 250. mm
+/gps/pos/radius 220. mm  		# Set the radius from sqrt(3)*cube half length
 
 # Use the cosine angular distribution
 /gps/ang/type cos
 /gps/ang/mintheta    0.000E+00 deg
-/gps/ang/maxtheta    9.000E+01 deg
-/gps/source/list 
+/gps/ang/maxtheta    3.000E+01 deg
 
-# Energy & Particle Type
-/gps/particle e-
-/gps/ene/type Mono
-/gps/ene/mono 100 MeV
-/run/beamOn 50
+# Run particles in window
+/run/beamOn 1

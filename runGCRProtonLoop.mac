@@ -1,0 +1,14 @@
+#########################
+# Set detector parameters
+#
+/AdEPTSim/Image/SNR 1
+/AdEPTSim/Image/NoiseCenter 0
+/AdEPTSim/Image/NoiseSigma 2
+
+##########################
+# Use a control loop to execute a macro file more than once
+#
+/control/alias initialValue	0
+/control/alias finalValue 	10000
+/control/alias stepSize 	1
+/control/loop runGCRProton.mac counterName {initialValue} {finalValue} {stepSize}
