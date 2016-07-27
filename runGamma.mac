@@ -8,7 +8,7 @@
 # Source definition
 /gps/particle gamma
 /gps/ene/type Mono
-/gps/ene/mono 5 MeV
+/gps/ene/mono 250 MeV
 
 # Model the particle source along the surface of a sphere surrounding the detector
 /gps/pos/type Surface

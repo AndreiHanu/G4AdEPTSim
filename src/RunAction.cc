@@ -52,10 +52,6 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-// Output filename format
-#define FILENAME_FORMAT "ArgonBox_%Y%m%d_%H%M_"
-#define FILENAME_SIZE 60
-
 using namespace std;
 using namespace cv;
 
@@ -147,18 +143,26 @@ void RunAction::EndOfRunAction(const G4Run* run)
 		vector<int> compression_params;
 		compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
 		compression_params.push_back(1);
-		
-		// Generate file naming format for images
-		static char outputFileTemplate[FILENAME_SIZE];
-		time_t now = time(0);
-		strftime(outputFileTemplate, sizeof(outputFileTemplate), FILENAME_FORMAT, localtime(&now));
-		G4String outputFile = outputFileTemplate;
-		//G4UIcommand::ConvertToString allows for conversion to be made from G4int to string useable by non Geant applications
+
+		// =============================================================================================== //
+		// Filenaming convention for training dataset
+		// event_#_XZ/YZ_particle.png
+
 		G4String eventFileXZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_XZ_" + 
 								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
 
 		G4String eventFileYZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_YZ_" + 
 								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
+
+		// =============================================================================================== //
+		// Filenaming convention for training dataset
+		// event_#_particle.png
+
+		// G4String eventFileXZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()*2) + "_" + 
+		// 						particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
+		
+		// G4String eventFileYZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()*2+1) + "_" + 
+		// 						particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
 
 		// Write out the images
 		imwrite(eventFileXZ, XZ, compression_params);

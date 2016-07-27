@@ -134,9 +134,10 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
   //Add the proccess' needed for biasing; keywords for processes can be found in chapter 5.2: Physics Processes of geant manual
   //Search class reference of process wanted and keyword is found there
   processesToBias.push_back("conv");
+  // processesToBias.push_back("compt");
+  // processesToBias.push_back("phot");
   fBiasingPhysics->Bias("gamma", processesToBias);
   //std::vector < const G4ParticleDefinition* > fParticlesToBias; for reference
-  fBiasingPhysics->Bias("neutron");
   
   // EM physics in gas cavity (Photoabsorption Ionization Model)
   //fEmName = G4String("pai_photon");

@@ -1,0 +1,67 @@
+# Initialize the run
+/run/initialize
+
+#
+# Source definition
+#
+# =============================
+# SPENVIS particle source
+# Project: AdEPT
+# Orbit: 550 km circ, 28 degree inclination
+# Particle: GCR iron
+# =============================
+/gps/particle  ion
+/gps/ion        26        56
+/gps/ene/type Arb
+/gps/hist/type arb
+/gps/hist/point   5.040000E+04   5.090260E-13
+/gps/hist/point   5.600000E+04   3.325313E-10
+/gps/hist/point   6.160000E+04   1.028042E-09
+/gps/hist/point   6.720000E+04   1.900664E-09
+/gps/hist/point   7.840000E+04   3.968208E-09
+/gps/hist/point   8.960000E+04   6.387109E-09
+/gps/hist/point   1.008000E+05   8.625682E-09
+/gps/hist/point   1.120000E+05   1.052949E-08
+/gps/hist/point   1.232000E+05   1.207930E-08
+/gps/hist/point   1.400000E+05   1.410701E-08
+/gps/hist/point   1.568000E+05   1.580849E-08
+/gps/hist/point   1.792000E+05   1.796363E-08
+/gps/hist/point   1.960000E+05   1.847508E-08
+/gps/hist/point   2.240000E+05   1.750244E-08
+/gps/hist/point   2.520000E+05   1.580598E-08
+/gps/hist/point   2.800000E+05   1.388333E-08
+/gps/hist/point   3.080000E+05   1.210795E-08
+/gps/hist/point   3.528000E+05   9.746728E-09
+/gps/hist/point   3.976000E+05   7.856243E-09
+/gps/hist/point   4.480000E+05   6.216960E-09
+/gps/hist/point   5.040000E+05   4.865322E-09
+/gps/hist/point   5.600000E+05   3.871322E-09
+/gps/hist/point   6.160000E+05   3.128901E-09
+/gps/hist/point   6.720000E+05   2.560524E-09
+/gps/hist/point   7.840000E+05   1.782917E-09
+/gps/hist/point   8.960000E+05   1.295593E-09
+/gps/hist/point   1.008000E+06   9.738434E-10
+/gps/hist/point   1.120000E+06   7.521852E-10
+/gps/hist/point   1.680000E+06   2.734065E-10
+/gps/hist/point   2.240000E+06   1.318715E-10
+/gps/hist/point   2.800000E+06   7.456130E-11
+/gps/hist/point   3.360000E+06   4.667904E-11
+/gps/hist/point   3.920000E+06   3.137069E-11
+/gps/hist/point   4.480000E+06   2.221357E-11
+/gps/hist/point   5.040000E+06   1.637272E-11
+/gps/hist/point   5.600000E+06   1.245704E-11
+/gps/hist/inter  Lin
+
+# Model the particle source along the surface of a sphere surrounding the detector
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 220. mm  		# Set the radius from sqrt(3)*cube half length
+
+# Use the cosine angular distribution
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    6.000E+01 deg
+
+# Run particles in window
+/run/beamOn 1

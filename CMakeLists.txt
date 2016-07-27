@@ -54,6 +54,8 @@ set(ADEPT_SCRIPTS
 	runGammaProton.mac
 	runGCRProton.mac
 	runGCRProtonLoop.mac
+  runGCRIron.mac
+	runGCRIronLoop.mac
   )
 
 foreach(_script ${ADEPT_SCRIPTS})
