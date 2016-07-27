@@ -19,7 +19,7 @@ endif()
 #----------------------------------------------------------------------------
 # Find OpenCV package
 #find_package(OpenCV REQUIRED core imgproc highgui)
-find_package(OpenCV REQUIRED core imgproc highgui imgcodecs)
+find_package(OpenCV REQUIRED core imgproc highgui)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 #----------------------------------------------------------------------------
