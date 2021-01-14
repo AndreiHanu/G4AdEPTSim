@@ -1,0 +1,58 @@
+#########################
+# Set detector parameters
+#
+/AdEPTSim/Image/SNR 5
+/AdEPTSim/Image/NoiseCenter 2
+/AdEPTSim/Image/NoiseSigma 5
+
+
+# Initialize The Run
+/run/initialize
+
+# Set Cuts
+/run/setCut  205 um					# Properly adjusted for Argon at NTP
+/run/particle/dumpCutValues
+
+# Verbosity
+/tracking/verbose 0
+
+##########################################################################################
+# Model the particle source along the surface of a sphere surrounding the detector
+##########################################################################################
+
+# Energy & Particle Type
+#/gps/particle proton
+#/gps/ene/type Mono
+#/gps/ene/mono 1000 MeV
+#/run/beamOn 50
+
+/gps/source/intensity 0.8
+/gps/particle proton
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 250. mm
+# Use the cosine angular distribution
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+/gps/ene/type Mono
+/gps/ene/mono 100 MeV
+
+/gps/source/add 0.2
+/gps/particle gamma
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 250. mm
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+/gps/ene/type Mono
+/gps/ene/mono 5 MeV
+
+/gps/source/list 
+
+#ensures that at each event one of each particle type is generated
+/gps/source/multiplevertex true
+/run/beamOn 10

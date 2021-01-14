@@ -1,0 +1,56 @@
+# Initialize the run
+/run/initialize
+
+#
+# Source definition
+#
+# =============================
+# SPENVIS particle source
+# Project: AdEPT
+# Orbit: 550 km circ, 28 degree inclination
+# Particle: GCR proton
+# =============================
+/gps/particle  proton
+/gps/ene/type Arb
+/gps/hist/type arb
+/gps/hist/point   2.800000E+03   1.855550E-07
+/gps/hist/point   3.200000E+03   1.261287E-06
+/gps/hist/point   3.500000E+03   2.283686E-06
+/gps/hist/point   4.000000E+03   4.248690E-06
+/gps/hist/point   4.500000E+03   6.255790E-06
+/gps/hist/point   5.000000E+03   7.973739E-06
+/gps/hist/point   5.500000E+03   9.312057E-06
+/gps/hist/point   6.300000E+03   1.107638E-05
+/gps/hist/point   7.100000E+03   1.244586E-05
+/gps/hist/point   8.000000E+03   1.370488E-05
+/gps/hist/point   9.000000E+03   1.330653E-05
+/gps/hist/point   1.000000E+04   1.212403E-05
+/gps/hist/point   1.100000E+04   1.076925E-05
+/gps/hist/point   1.200000E+04   9.392608E-06
+/gps/hist/point   1.400000E+04   7.160443E-06
+/gps/hist/point   1.600000E+04   5.486477E-06
+/gps/hist/point   1.800000E+04   4.244669E-06
+/gps/hist/point   2.000000E+04   3.334612E-06
+/gps/hist/point   3.000000E+04   1.229004E-06
+/gps/hist/point   4.000000E+04   5.849268E-07
+/gps/hist/point   5.000000E+04   3.252051E-07
+/gps/hist/point   6.000000E+04   2.004336E-07
+/gps/hist/point   7.000000E+04   1.328642E-07
+/gps/hist/point   8.000000E+04   9.293333E-08
+/gps/hist/point   9.000000E+04   6.774405E-08
+/gps/hist/point   1.000000E+05   5.102575E-08
+/gps/hist/inter  Lin
+
+# Model the particle source along the surface of a sphere surrounding the detector
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 220. mm  		# Set the radius from sqrt(3)*cube half length
+
+# Use the cosine angular distribution
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    6.000E+01 deg
+
+# Run particles in window
+/run/beamOn 5

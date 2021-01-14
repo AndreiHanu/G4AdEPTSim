@@ -1,0 +1,25 @@
+# Initialize the run
+/run/initialize
+
+# Set Cuts
+/run/setCut  50 um					# Properly adjusted for Argon at NTP
+/run/particle/dumpCutValues
+
+# Source definition
+/gps/particle e-
+/gps/ene/type Mono
+/gps/ene/mono 5 MeV
+
+# Model the particle source along the surface of a sphere surrounding the detector
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 220. mm  		# Set the radius from sqrt(3)*cube half length
+
+# Use the cosine angular distribution
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    3.000E+01 deg
+
+# Run particles in window
+/run/beamOn 1
