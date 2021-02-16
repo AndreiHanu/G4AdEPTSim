@@ -143,7 +143,6 @@ void RunAction::EndOfRunAction(const G4Run* run)
 		vector<int> compression_params;
 		compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
 		compression_params.push_back(1);
-<<<<<<< HEAD
 
 		// =============================================================================================== //
 		// Filenaming convention for training dataset
@@ -151,8 +150,7 @@ void RunAction::EndOfRunAction(const G4Run* run)
 
 		G4String eventFileXZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_XZ_" + 
 								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + ".png"; 
-=======
-		
+
 		// Generate file naming format for images
 		static char outputFileTemplate[FILENAME_SIZE];
 		time_t now = time(0);
@@ -162,7 +160,6 @@ void RunAction::EndOfRunAction(const G4Run* run)
 		G4String eventFileXZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_" + 
 								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + 
 								"_XZ_.png"; 
->>>>>>> dd9485abd03d875d3a355c943f82cf411886385c
 
 		G4String eventFileYZ = 	"event_" + G4UIcommand::ConvertToString(run->GetRunID()) + "_" + 
 								particleGun->GetGPS()->GetParticleDefinition()->GetParticleName() + 
@@ -180,7 +177,7 @@ void RunAction::EndOfRunAction(const G4Run* run)
 
 		// Write out the images
 		imwrite(eventFileXZ, XZ, compression_params);
-    	imwrite(eventFileYZ, YZ, compression_params);
+    		imwrite(eventFileYZ, YZ, compression_params);
 	}
 	
 	// Print End of Run
