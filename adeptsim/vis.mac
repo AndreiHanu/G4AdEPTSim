@@ -1,0 +1,37 @@
+# Create empty scene
+/vis/scene/create
+/vis/open OGL 800x800-0+0
+
+# Draw the scene
+/vis/drawVolume
+/vis/viewer/set/viewpointThetaPhi 90. 0. deg
+/vis/viewer/zoom 1.4
+
+# Specify style (surface, wireframe, auxiliary edges,...)
+/vis/viewer/set/style s
+/vis/viewer/set/auxiliaryEdge false
+/vis/viewer/set/lineSegmentsPerCircle 100
+
+# Draw smooth trajectories at end of event, showing trajectory points
+# as markers 2 pixels wide:
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByCharge
+#/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+#/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 1
+
+# Particle Filter
+#/vis/filtering/trajectories/create/particleFilter
+#/vis/filtering/trajectories/particleFilter-0/add gamma
+#/vis/filtering/trajectories/particleFilter-0/add e-
+#/vis/filtering/trajectories/particleFilter-0/add proton
+#/vis/filtering/trajectories/particleFilter-0/add neutron
+
+# Choose Particle Colour
+#/vis/modeling/trajectories/create/drawByParticleID
+#/vis/modeling/trajectories/drawByParticleID-0/set gamma yellow
+#/vis/modeling/trajectories/drawByParticleID-0/set e- red
+#/vis/modeling/trajectories/drawByParticleID-0/set proton blue
+#/vis/modeling/trajectories/drawByParticleID-0/set neutron yellow
+
+# To superimpose all of the events from a given run:
+#/vis/scene/endOfEventAction accumulate 1
